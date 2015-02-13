@@ -1,10 +1,7 @@
-
 void setup()
 {
   size(800, 800);
-  smooth();
-  //noLoop();
-  //frameRate(0);
+  noLoop();
 }
 
 void draw()
@@ -14,15 +11,13 @@ void draw()
   strokeWeight(5);
   for(int y = 0; y<=625; y+=125) {
     float iter = y / 125;
-    float product = y/6;//iter*spacing;
+    float cow = y/6;
     for(int i = 0; i <= 5; i++){
-      int x = 125-product+(i*(375+product*2))/6;
-    //}
-    //for(float x = 125 - product; x <= 500 + product; x += (375+product*2)/6) {
+      float x = 125-cow+(i*(375+cow*2))/5; //for perspective
       pushMatrix();
-      float ratio = .75 + .14 * y/125;
-      translate(random(60,122)+x, random(60,122)+y-50+(60/iter) ); 
-      drawAnimal(ratio);
+      float ratio = .75 + .14 * y/125; //For size of cows, smaller in back, bigger in front
+      translate(random(60,122)+x, random(60,122)+y-100+(120/iter) ); //translates the cows from 0,0 where they're made
+      drawAnimal(ratio); //draw animal with argument that affects size
       popMatrix();
     }
   }
@@ -34,17 +29,17 @@ void drawAnimal(float ratio) {
   float body_y = random(43, 57); //Varies body width
   float eyes = random(-2,2); //Changes direction of eyes
   
-  float direction = random(-3, 1);
-  float head_x = 0;
-  float tail_x = 0;
-  float spot_x = 1;
-  if(direction >= 0){
+  float direction = random(-3, 1);//Higher chance to face forward than backward (negative is forward)
+  float head_x = 0;//To adjust head if backward
+  float tail_x = 0;//To adjust tail if backward
+  float spot_x = 1;//To adjust spot if backward
+  if(direction >= 0){//if facing backward, initialize values
     spot_x = -1;
     tail_x = -body_x+12;
     head_x = body_x-18;
   }
   
-
+//The following picks a random color from the array
   color[] c = { color(74,32,32), color(70,70,70), color(0,0,0), color(95,25,0), color(84,40,25) };
   int index = (floor(random(0, 5)));
   color col = c[index];
@@ -57,6 +52,7 @@ void drawAnimal(float ratio) {
   
   //ONLY BACKWARDS FACING
   if(direction >= 0){
+  
   //BACKWARD EARS
   strokeWeight(2);
   ellipse((-3+head_x)*ratio, -22*ratio, 15*ratio, 8*ratio);
@@ -66,15 +62,14 @@ void drawAnimal(float ratio) {
   //BACKWARD HEAD
   ellipse((-25+head_x)*ratio, -10*ratio, 35*ratio, 48*ratio);
   }//END BACKWARDS FACING
-    //TAIL
+ 
+  //TAIL
   if(direction < 0){
   ellipse(36*ratio, 7*ratio, 2*ratio, 22*ratio);
   }
   //BODY
   ellipse(0, 0, body_x*ratio, body_y*ratio);
-  
-
-  
+ 
   //NEAR LEFT LEG
   ellipse(-7*ratio, 20*ratio, 17*ratio, 30*ratio);
   
